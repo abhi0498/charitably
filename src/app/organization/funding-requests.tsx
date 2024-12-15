@@ -45,7 +45,7 @@ export function FundingRequests() {
         <CardHeader>
           <CardTitle>Current Funding Requests</CardTitle>
           <CardDescription>
-            Manage your organization's funding requests
+            Manage your organization&apos;s funding requests
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,13 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FundingRequests } from "./funding-requests";
 import { ExpenseAllocation } from "./expense-allocation";
+import { FundingRequests } from "./funding-requests";
 
 export default function OrganizationDashboard() {
   return (

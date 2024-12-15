@@ -28,6 +28,8 @@ export const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, user, account }) {
+      console.log("jwt", user, account);
+
       if (user) {
         token.id = user.id;
         token.email = user.email;
