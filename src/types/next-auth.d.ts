@@ -6,6 +6,13 @@ declare module "next-auth" {
       id: string;
       email: string;
       name?: string | null;
+      organization: {
+        id: string;
+        name: string;
+        description: string;
+        taxId: string;
+        verified: boolean;
+      } | null;
     };
   }
 

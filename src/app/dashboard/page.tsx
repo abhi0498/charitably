@@ -52,7 +52,7 @@ export default function Dashboard() {
                 {donationHistory.map((donation) => (
                   <tr key={donation.id}>
                     <td>{donation.organization}</td>
-                    <td>${donation.amount}</td>
+                    <td>₹{donation.amount}</td>
                     <td>{donation.date}</td>
                   </tr>
                 ))}

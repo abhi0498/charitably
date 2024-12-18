@@ -14,39 +14,36 @@ generator client {
 }
 
 model User {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?         @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
-
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Donation  Donation[]
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  email          String        @unique
+  name           String?
+  role           Role          @default(USER)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  emailVerified  DateTime?
+  donations      Donation[]
+  accounts       Account[]
+  sessions       Session[]
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?       @db.ObjectId
 }
 
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @db.ObjectId
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
+  refresh_token     String?  @db.String
+  access_token      String?  @db.String
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.String
+  id_token          String?  @db.String
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -57,9 +54,8 @@ model Session {
   userId       String   @db.ObjectId
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -71,26 +67,11 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Optional for WebAuthn support
-model Authenticator {
-  credentialID         String  @id @map("_id")
-  userId               String  @db.ObjectId
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, credentialID])
-}
-
 model Organization {
-  id              String           @id @default(uuid()) @map("_id")
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   description     String
+  mission         String?
   taxId           String           @unique
   verified        Boolean          @default(false)
   createdAt       DateTime         @default(now())
@@ -99,48 +80,59 @@ model Organization {
   expenses        Expense[]
   events          Event[]
   fundingRequests FundingRequest[]
+  users           User[]
+  updates         Update[]
+}
+
+model Update {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
+  createdAt    DateTime     @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+  orgId        String       @db.ObjectId
 }
 
 model Donation {
-  id               String           @id @default(uuid()) @map("_id")
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
   amount           Float
   type             DonationType
   remainingBalance Float
   createdAt        DateTime         @default(now())
   user             User             @relation(fields: [userId], references: [id])
-  userId           String
+  userId           String           @db.ObjectId
   organization     Organization     @relation(fields: [orgId], references: [id])
-  orgId            String
+  orgId            String           @db.ObjectId
   event            Event?           @relation(fields: [eventId], references: [id])
-  eventId          String?
+  eventId          String?          @db.ObjectId
   fundingRequest   FundingRequest?  @relation(fields: [requestId], references: [id])
-  requestId        String?
+  requestId        String?          @db.ObjectId
   expenseMappings  ExpenseMapping[]
 }
 
 model Expense {
-  id           String           @id @default(uuid()) @map("_id")
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
   amount       Float
   category     ExpenseCategory
   description  String
   createdAt    DateTime         @default(now())
   receipts     String[] // URLs to receipt images
   organization Organization     @relation(fields: [orgId], references: [id])
-  orgId        String
+  orgId        String           @db.ObjectId
   mappings     ExpenseMapping[]
 }
 
 model ExpenseMapping {
-  id         String   @id @default(uuid()) @map("_id")
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   proportion Float
   donation   Donation @relation(fields: [donationId], references: [id])
-  donationId String
+  donationId String   @db.ObjectId
   expense    Expense  @relation(fields: [expenseId], references: [id])
-  expenseId  String
+  expenseId  String   @db.ObjectId
 }
 
 model Event {
-  id            String       @id @default(uuid()) @map("_id")
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   description   String
   goal          Float
@@ -148,20 +140,21 @@ model Event {
   startDate     DateTime
   endDate       DateTime
   organization  Organization @relation(fields: [orgId], references: [id])
-  orgId         String
+  orgId         String       @db.ObjectId
   donations     Donation[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 }
 
 model FundingRequest {
-  id            String       @id @default(uuid()) @map("_id")
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   description   String
   goal          Float
   currentAmount Float        @default(0)
   organization  Organization @relation(fields: [orgId], references: [id])
-  orgId         String
+  orgId         String       @db.ObjectId
+  isClosed      Boolean      @default(false)
   donations     Donation[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -179,4 +172,9 @@ enum ExpenseCategory {
   EDUCATION
   OPERATIONS
   OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
 }

@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import LoginOrProfileButton from "./login-profile-button";
+import { useSession } from "next-auth/react";
 
 export function Header() {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <header className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -20,13 +26,15 @@ export function Header() {
                 <Button variant="ghost">Dashboard</Button>
               </Link>
             </li>
+            {session?.user?.organization && (
+              <li>
+                <Link href={`/organization/${session.user.organization.id}`}>
+                  <Button variant="ghost">My Organization</Button>
+                </Link>
+              </li>
+            )}
             <li>
-              <Link href="/organization">
-                <Button variant="ghost">Organization</Button>
-              </Link>
-            </li>
-            <li>
-              <Button variant="secondary">Login</Button>
+              <LoginOrProfileButton />
             </li>
           </ul>
         </nav>

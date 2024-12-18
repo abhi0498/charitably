@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const featuredOrganizations = [
   {
@@ -30,39 +31,38 @@ const featuredOrganizations = [
 
 export default function Home() {
   return (
-    <div className="space-y-8">
-      <section>
-        <h1 className="text-4xl font-bold mb-4">Welcome to Charitably</h1>
+    <main>
+      <header className="hero-section">
+        <h1 className="text-4xl font-bold mb-4">
+          Support Charitable Organizations
+        </h1>
         <p className="text-xl mb-4">
-          Discover charitable organizations and events near you.
+          Make a difference by supporting verified charitable organizations
         </p>
-        <form className="flex space-x-4">
-          <Input
-            placeholder="Search for causes or organizations"
-            className="flex-grow"
-          />
-          <Button type="submit">Search</Button>
-        </form>
-      </section>
+      </header>
 
-      <section>
+      <section aria-label="Featured Organizations">
         <h2 className="text-2xl font-semibold mb-4">Featured Organizations</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div role="list" className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {featuredOrganizations.map((org) => (
-            <Card key={org.id}>
-              <CardHeader>
-                <CardTitle>{org.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>{org.description}</CardDescription>
-              </CardContent>
-              <CardFooter>
-                <Button>Donate</Button>
-              </CardFooter>
-            </Card>
+            <article key={org.id} role="listitem">
+              <Link key={org.id} href={`/organization/${org.id}`}>
+                <Card key={org.id} className="h-full flex flex-col">
+                  <CardHeader>
+                    <CardTitle>{org.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>{org.description}</CardDescription>
+                  </CardContent>
+                  <CardFooter className="flex justify-end align-end">
+                    <Button>Donate</Button>
+                  </CardFooter>
+                </Card>
+              </Link>
+            </article>
           ))}
         </div>
       </section>
-    </div>
+    </main>
   );
 }
