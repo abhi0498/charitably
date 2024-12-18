@@ -19,21 +19,13 @@ import {
   updateFundingRequest,
 } from "./actions";
 import { Progress } from "@/components/ui/progress";
-import { useRouter } from "next/navigation";
+import { FundingRequest } from "@prisma/client";
+// import { useRouter } from "next/navigation";
 
 interface FundingRequestsProps {
   organizationData: {
     id: string;
-    fundingRequests: {
-      id: string;
-      title: string;
-      description: string;
-      goal: number;
-      currentAmount: number;
-      createdAt: Date;
-      updatedAt: Date;
-      orgId: string;
-    }[];
+    fundingRequests: FundingRequest[];
   };
 }
 
@@ -47,7 +39,7 @@ export function FundingRequests({ organizationData }: FundingRequestsProps) {
     goal: "",
     description: "",
   });
-  const router = useRouter();
+  // const router = useRouter();
   const handleNewRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();

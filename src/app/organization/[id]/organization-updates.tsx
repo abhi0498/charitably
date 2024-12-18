@@ -5,13 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-interface Update {
-  id: number;
-  date: string;
-  title: string;
-  content: string;
-}
+import { Update } from "@prisma/client";
 
 interface OrganizationUpdatesProps {
   updates: Update[];
@@ -24,10 +18,12 @@ export function OrganizationUpdates({ updates }: OrganizationUpdatesProps) {
         <Card key={update.id}>
           <CardHeader>
             <CardTitle>{update.title}</CardTitle>
-            <CardDescription>{update.date}</CardDescription>
+            <CardDescription>
+              {update.createdAt.toLocaleDateString()}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>{update.content}</p>
+            <p>{update.title}</p>
           </CardContent>
         </Card>
       ))}

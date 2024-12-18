@@ -40,7 +40,7 @@ function generateOrganizationSchema(org: OrganizationWithRelations) {
 export default async function OrganizationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   // In a real application, you would fetch the organization data based on the ID
   // For this example, we'll use the mock data
@@ -106,7 +106,11 @@ export default async function OrganizationPage({
   );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const organization = await getOrganization(id);
 
@@ -118,7 +122,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       description: organization?.description,
       images: [
         {
-          url: organization?.imageUrl || "/default-org-image.png",
+          url: "/default-org-image.png",
           width: 1200,
           height: 630,
         },

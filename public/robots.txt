@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://charitably.org/sitemap.xml 
+Sitemap: https://charitably.in/sitemap.xml 

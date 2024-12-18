@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExpenseAllocation } from "./expense-allocation";
-import { FundingRequests } from "./funding-requests";
 
 export default function OrganizationDashboard() {
   return (
@@ -9,9 +8,7 @@ export default function OrganizationDashboard() {
         <TabsTrigger value="funding">Funding Requests</TabsTrigger>
         <TabsTrigger value="reporting">Reporting</TabsTrigger>
       </TabsList>
-      <TabsContent value="funding">
-        <FundingRequests />
-      </TabsContent>
+      <TabsContent value="funding">{/* <FundingRequests /> */}</TabsContent>
       <TabsContent value="reporting">
         <ExpenseAllocation />
       </TabsContent>

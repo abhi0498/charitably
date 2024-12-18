@@ -8,7 +8,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Organization } from "@prisma/client";
+import { Event, FundingRequest, Organization } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -17,7 +17,10 @@ import React from "react";
 const FundingRequests = ({
   organizationData,
 }: {
-  organizationData: Organization;
+  organizationData: Organization & {
+    fundingRequests: FundingRequest[];
+    events: Event[];
+  };
 }) => {
   const { data: session } = useSession();
   return (
@@ -39,12 +42,12 @@ const FundingRequests = ({
             <CardHeader>
               <CardTitle>{request.title}</CardTitle>
               <CardDescription>
-                ₹{request.raised} raised of ₹{request.goal} goal
+                ₹{request.currentAmount} raised of ₹{request.goal} goal
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Progress
-                value={(request.raised / request.goal) * 100}
+                value={(request.currentAmount / request.goal) * 100}
                 className="mb-2"
               />
               <Button>Donate Now</Button>
