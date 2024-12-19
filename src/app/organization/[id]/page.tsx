@@ -1,14 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { prisma } from "@/lib/prisma";
+import { FundingRequest, Organization, Update, Gallery } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { FundingRequests } from "../funding-requests";
+import Mission from "./mission";
+import { OrganizationGallery } from "./organization-gallery";
 import { OrganizationUpdates } from "./organization-updates";
-import { Organization, FundingRequest, Update } from "@prisma/client";
 
 interface OrganizationWithRelations extends Organization {
   fundingRequests: FundingRequest[];
   updates: Update[];
+  gallery: Gallery[];
 }
 
 const getOrganization = async (
@@ -19,6 +22,7 @@ const getOrganization = async (
     include: {
       fundingRequests: true,
       updates: true,
+      gallery: true,
     },
   });
 };
@@ -65,17 +69,15 @@ export default async function OrganizationPage({
           <p className="text-xl text-gray-600 mb-4">
             {organizationData.description}
           </p>
-          <Card>
-            <CardHeader>
-              <CardTitle>Our Mission</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{organizationData.mission}</p>
-            </CardContent>
-          </Card>
+          <Mission organizationData={organizationData} />
         </section>
 
+
         <FundingRequests organizationData={organizationData} />
+        <OrganizationGallery
+          images={organizationData.gallery || []}
+          organizationData={organizationData}
+        />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">Recent Updates</h2>

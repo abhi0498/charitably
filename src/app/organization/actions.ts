@@ -70,3 +70,31 @@ export async function closeFundingRequest(
   revalidatePath(`/organization/${organizationId}`);
   return fundingRequest;
 }
+
+export async function updateOrganizationMission(
+  mission: string,
+  organizationId: string
+) {
+  const organization = await prisma.organization.update({
+    where: { id: organizationId },
+    data: { mission },
+  });
+  revalidatePath(`/organization/${organizationId}`);
+  return organization;
+}
+
+export async function createGallery({
+  title,
+  imageUrl,
+  organizationId,
+}: {
+  title: string;
+  imageUrl: string;
+  organizationId: string;
+}) {
+  const gallery = await prisma.gallery.create({
+    data: { title, imageUrl, orgId: organizationId, description: "" },
+  });
+  revalidatePath(`/organization/${organizationId}`);
+  return gallery;
+}

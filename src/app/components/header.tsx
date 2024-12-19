@@ -21,11 +21,13 @@ export function Header() {
                 <Button variant="ghost">Home</Button>
               </Link>
             </li>
-            <li>
-              <Link href="/dashboard">
-                <Button variant="ghost">Dashboard</Button>
-              </Link>
-            </li>
+            {session?.user && (
+              <li>
+                <Link href="/dashboard">
+                  <Button variant="ghost">Dashboard</Button>
+                </Link>
+              </li>
+            )}
             {session?.user?.organization && (
               <li>
                 <Link href={`/organization/${session.user.organization.id}`}>
