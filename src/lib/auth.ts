@@ -38,7 +38,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "email") return true;
 
       try {
@@ -52,9 +52,9 @@ export const authOptions: AuthOptions = {
             await prisma.account.create({
               data: {
                 userId: existingUser.id,
-                type: account?.type!,
-                provider: account?.provider!,
-                providerAccountId: account?.providerAccountId!,
+                type: account?.type || "oauth",
+                provider: account?.provider || "google",
+                providerAccountId: account?.providerAccountId || "",
                 access_token: account?.access_token,
                 token_type: account?.token_type,
                 scope: account?.scope,

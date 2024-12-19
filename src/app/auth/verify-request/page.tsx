@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ResendEmailButton } from "./resend-email";
+
 import { Dot } from "lucide-react";
 
 export default function EmailSentPage() {

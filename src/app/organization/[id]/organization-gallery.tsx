@@ -29,7 +29,7 @@ export function OrganizationGallery({
   organizationData,
 }: OrganizationGalleryProps) {
   const [images, setImages] = useState<Gallery[]>(initialImages);
-  const [selectedImage, setSelectedImage] = useState<Gallery | null>(null);
+
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [newImageTitle, setNewImageTitle] = useState("");
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
@@ -142,7 +142,7 @@ export function OrganizationGallery({
               <DialogHeader>
                 <DialogTitle>Upload New Image</DialogTitle>
                 <DialogDescription>
-                  Add a new image to the organization's gallery.
+                  Add a new image to the organization&apos;s gallery.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleImageUpload} className="space-y-4">
@@ -185,7 +185,7 @@ export function OrganizationGallery({
                   width={400}
                   height={300}
                   className="w-full h-48 object-cover"
-                  onClick={() => setSelectedImage(image)}
+                  //   onClick={() => setSelectedImage(image)}
                 />
               </div>
             </DialogTrigger>
