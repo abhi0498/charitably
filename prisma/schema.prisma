@@ -172,6 +172,25 @@ model FundingRequest {
   updatedAt     DateTime     @updatedAt
 }
 
+model OrganizationApplication {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  mission     String
+  taxId       String
+  adminEmail  String
+  adminName   String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  status      ApplicationStatus @default(PENDING)
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum DonationType {
   GENERAL
   SPECIFIC

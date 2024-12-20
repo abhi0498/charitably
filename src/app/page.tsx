@@ -39,14 +39,29 @@ export default async function Home() {
         }}
       />
       <main>
-        <header className="hero-section">
-          <h1 className="text-4xl font-bold mb-4">
-            Trusted Platform for Charitable Giving
-          </h1>
-          <p className="text-xl mb-4">
-            Make a difference by supporting verified charitable organizations
-          </p>
-        </header>
+        <section className="hero">
+          <h1>Trusted Platform for Charitable Giving</h1>
+          <p>Support verified organizations and make a real impact</p>
+          <div className="mt-4">
+            <Link
+              href="/organization/apply"
+              className="text-primary hover:underline"
+            >
+              Register Your Organization
+            </Link>
+            <span className="mx-2">•</span>
+            <Link href="/about" className="text-primary hover:underline">
+              About Us
+            </Link>
+            <span className="mx-2">•</span>
+            <Link
+              href="/organizations"
+              className="text-primary hover:underline"
+            >
+              Browse Organizations
+            </Link>
+          </div>
+        </section>
 
         <section aria-label="Featured Organizations">
           <h2 className="text-2xl font-semibold mb-4">

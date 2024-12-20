@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { createOrganization } from "./utils";
 
 export async function POST(request: Request) {
   try {
@@ -16,46 +14,12 @@ export async function POST(request: Request) {
 
     const { name, description, taxId, adminEmail } = await request.json();
 
-    // Create organization
-    const organization = await prisma.organization.create({
-      data: {
-        name,
-        description,
-        taxId,
-        verified: true,
-      },
-    });
-
-    // Link admin user if they exist
-    const user = await prisma.user.findUnique({
-      where: { email: adminEmail },
-    });
-
-    if (user) {
-      await prisma.user.update({
-        where: { email: adminEmail },
-        data: {
-          organization: {
-            connect: {
-              id: organization.id,
-            },
-          },
-        },
-      });
-    } else {
-      //create user
-      await prisma.user.create({
-        data: {
-          email: adminEmail,
-          name: "Admin",
-          organization: {
-            connect: {
-              id: organization.id,
-            },
-          },
-        },
-      });
-    }
+    const organization = await createOrganization(
+      name,
+      description,
+      taxId,
+      adminEmail
+    );
 
     return NextResponse.json({ success: true, organization });
   } catch (error) {

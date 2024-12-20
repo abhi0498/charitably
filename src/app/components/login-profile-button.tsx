@@ -25,14 +25,24 @@ const LoginOrProfileButton = () => {
   }
 
   return (
-    <Button
-      variant="secondary"
-      onClick={() => {
-        navigate.push("/api/auth/signin");
-      }}
-    >
-      Login
-    </Button>
+    <div className="flex items-center gap-2">
+      <Button
+        variant="ghost"
+        onClick={() => {
+          navigate.push("/organization/apply");
+        }}
+      >
+        Apply as Organization
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          navigate.push("/api/auth/signin");
+        }}
+      >
+        Login
+      </Button>
+    </div>
   );
 };
 

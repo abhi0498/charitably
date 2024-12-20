@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export default function OrganizationApplicationPage() {
   const [submitted, setSubmitted] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function OrganizationApplicationPage() {
           mission: formData.get("mission"),
           adminEmail: formData.get("email"),
           adminName: formData.get("adminName"),
+          taxId: formData.get("taxId"),
         }),
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +33,23 @@ export default function OrganizationApplicationPage() {
 
       if (response.ok) {
         setSubmitted(true);
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+          duration: 3000,
+        });
       }
     } catch (error) {
       console.error("Error submitting application:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while submitting your application",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
@@ -85,6 +102,12 @@ export default function OrganizationApplicationPage() {
           </div>
 
           <div>
+            <label htmlFor="taxId" className="block text-sm font-medium mb-1">
+              Tax ID
+            </label>
+            <Input id="taxId" name="taxId" />
+          </div>
+          <div>
             <label
               htmlFor="adminName"
               className="block text-sm font-medium mb-1"
@@ -101,7 +124,9 @@ export default function OrganizationApplicationPage() {
             <Input id="email" name="email" type="email" required />
           </div>
 
-          <Button type="submit">Submit Application</Button>
+          <div className="flex justify-end">
+            <Button type="submit">Submit Application</Button>
+          </div>
         </form>
       </CardContent>
     </Card>
