@@ -55,7 +55,7 @@ export default function OrganizationApplicationPage() {
 
   if (submitted) {
     return (
-      <Card>
+      <Card className="max-w-md mx-auto">
         <CardContent className="pt-6">
           <h2 className="text-2xl font-bold mb-4">Application Submitted!</h2>
           <p>

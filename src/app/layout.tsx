@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers";
-import { Header } from "./components/header";
+import { Header } from "@/components/header";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Toaster } from "@/components/ui/toaster";
+import { AnimatedBackground } from "@/components/animate-background";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,6 +31,15 @@ export const metadata: Metadata = {
     "fundraising",
     "social impact",
     "India charity",
+    "charitable organizations",
+    "donate to charity",
+    "donate to nonprofit",
+    "donate to non-profit",
+    "donate to non-profit organization",
+    "non-profit organization",
+    "non-profit",
+    "non profit",
+    "ngo",
   ],
   authors: [{ name: "Charitably" }],
   creator: "Charitably",
@@ -70,6 +80,8 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
+          <AnimatedBackground />
+
           <main className="container mx-auto px-4 py-4">{children}</main>
           <Toaster />
         </Providers>

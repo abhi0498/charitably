@@ -20,6 +20,7 @@ import {
 } from "./actions";
 import { Progress } from "@/components/ui/progress";
 import { FundingRequest } from "@prisma/client";
+// import { DonationButton } from "@/components/donation-button";
 // import { useRouter } from "next/navigation";
 
 interface FundingRequestsProps {
@@ -121,6 +122,11 @@ export function FundingRequests({ organizationData }: FundingRequestsProps) {
                       ) : (
                         <>
                           <Button variant="outline">Donate</Button>
+                          {/* <DonationButton
+                            organizationId={organizationData.id}
+                            organizationName={organizationData.name}
+                            upiId={organizationData.upiId || "9066926653@paytm"}
+                          /> */}
                         </>
                       ))}
                   </div>
